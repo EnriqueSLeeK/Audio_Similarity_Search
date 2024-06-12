@@ -1,7 +1,7 @@
 
 import weaviate from "weaviate-ts-client"
 
-client: any = weaviate.client(
+let client: any = weaviate.client(
 	{
 		scheme: process.env.scheme,
 		host: process.env.host
@@ -38,4 +38,3 @@ try {
 } catch (error) {
 	console.log("Schema already exists or failed to create one");
 }
-

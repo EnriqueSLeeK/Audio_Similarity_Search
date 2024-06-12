@@ -4,19 +4,19 @@ import weaviate from "weaviate-ts-client"
 @Injectable()
 export class AppService {
 
-  // client: any = weaviate.client(
-  //   {
-  //       scheme: process.env.scheme,
-  //       host: process.env.host
-  //   }
-  // )
-
   client: any = weaviate.client(
     {
-        scheme: 'http',
-        host: 'localhost:8080'
+        scheme: process.env.SCHEME,
+        host: process.env.HOST
     }
   )
+
+  // client: any = weaviate.client(
+  //   {
+  //       scheme: 'http',
+  //       host: 'localhost:8080'
+  //   }
+  // )
 
   constructor () {}    
 
