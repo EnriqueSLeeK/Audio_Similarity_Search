@@ -7,7 +7,7 @@ export class AppController {
     private readonly appService: AppService,
   ) {}
 
-  @Post()
+  @Post('search')
   async queryValue(audio: any, text: string) {
 
     if (audio == null)
@@ -23,7 +23,7 @@ export class AppController {
     return decodedResult;
   }
 
-  @Post()
+  @Post('query')
   async uploadAudio(audio: any, text: string) {
 
     if (audio == null)
