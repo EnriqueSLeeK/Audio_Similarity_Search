@@ -13,11 +13,13 @@ public class AudioUseCase {
     public AudioModel buscaAudio(AudioModel audioModel) {
         log.info("buscando audios na base de dados");
         return AudioModel.builder().build();
+        // integrar com parte do Lee
 //        return audioDatabasePort.buscaAudios();
     }
 
     public void cadastrarAudio(AudioModel audioModel) {
         log.info(String.format("inserindo audio [%s] na base de dados", audioModel.getNomeAudio()));
+        // integrar com parte do Lee
 //        audioDatabasePort.cadastraAudio(audioModel);
     }
 }
