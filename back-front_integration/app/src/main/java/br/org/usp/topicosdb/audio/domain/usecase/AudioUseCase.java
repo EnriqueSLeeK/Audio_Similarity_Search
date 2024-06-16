@@ -14,7 +14,8 @@ public class AudioUseCase {
         log.info("buscando audios na base de dados");
         return AudioModel.builder().build();
         // integrar com parte do Lee
-//        return audioDatabasePort.buscaAudios();
+//        var audioModelRetorno = integracaoPort.busca(audioModel);
+//        return audioModelRetorno;
     }
 
     public void cadastrarAudio(AudioModel audioModel) {
