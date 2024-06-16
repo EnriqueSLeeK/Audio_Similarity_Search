@@ -24,13 +24,13 @@ public class CadastraAudioRestController {
     private final Handler handler;
 
     @PostMapping("grava/")
-    public ResponseEntity<String> cadastraAudio(@RequestBody final String mensagem) {
+    public ResponseEntity<String> cadastraAudio(@RequestBody final String nomeArquivoAudio) {
         try {
             log.info("solicitação de cadastro de audio");
-            var audioFile = handler.getContent(mensagem);
+            var audioFile = handler.getContent(nomeArquivoAudio);
             var audioDTO = AudioDTO.builder()
                     .idAudio(UUID.randomUUID().toString())
-                    .nomeAudio(mensagem)
+                    .nomeAudio(nomeArquivoAudio)
                     .audio(audioFile)
                     .build();
             audioService.cadastraAudio(audioDTO);

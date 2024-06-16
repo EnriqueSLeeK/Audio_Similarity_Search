@@ -24,10 +24,10 @@ public class BuscaAudioRestController {
     private final Handler handler;
 
     @GetMapping("busca/")
-    public ResponseEntity<AudioDTO> buscaAudio(@RequestBody final String mensagem) {
+    public ResponseEntity<AudioDTO> buscaAudio(@RequestBody final String nomeArquivoAudio) {
         try {
             log.info("solicitação de busca por audio");
-            var audioFile = handler.getContent(mensagem);
+            var audioFile = handler.getContent(nomeArquivoAudio);
             var audioDTO = AudioDTO.builder().audio(audioFile).build();
             var audioRetornoDTO = audioService.buscaAudio(audioDTO);
 
