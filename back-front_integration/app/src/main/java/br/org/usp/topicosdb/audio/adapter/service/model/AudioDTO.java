@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.sound.sampled.AudioInputStream;
-
 @Getter
 @Builder
 public class AudioDTO {
@@ -16,5 +14,5 @@ public class AudioDTO {
     @JsonProperty("nome_audio")
     private String nomeAudio;
 
-    private AudioInputStream audioInputStream;
+    private Object audio;
 }

@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.sound.sampled.AudioInputStream;
-
 @Getter
 @Builder(toBuilder = true)
 public class AudioModel {
@@ -20,5 +18,5 @@ public class AudioModel {
     private String nomeAudio;
 
     @NotNull
-    private AudioInputStream audioInputStream;
+    private Object audio;
 }

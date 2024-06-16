@@ -27,13 +27,8 @@ public class BuscaAudioRestController {
     public ResponseEntity<AudioDTO> buscaAudio(@RequestBody final String mensagem) {
         try {
             log.info("solicitação de busca por audio");
-            String path = "https://github.com/EnriqueSLeeK/Audio_Similarity_Search/blob/main/back-front%20integration/app/src/main/resources/";
-            // tentando pegar da web
-            var urlConnection = new URL(path + mensagem).openConnection().getInputStream();
-            // pegando o arquivo localmente
-            var inputStream = getClass().getClassLoader().getResourceAsStream(mensagem);
-            var audioStream = AudioSystem.getAudioInputStream(inputStream);
-            var audioDTO = AudioDTO.builder().audioInputStream(audioStream).build();
+            var audioFile = handler.getContent(mensagem);
+            var audioDTO = AudioDTO.builder().audio(audioFile).build();
             var audioRetornoDTO = audioService.buscaAudio(audioDTO);
 
             return ResponseEntity.ok(audioRetornoDTO);
