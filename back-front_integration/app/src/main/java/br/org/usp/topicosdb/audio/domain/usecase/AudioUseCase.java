@@ -12,7 +12,11 @@ public class AudioUseCase {
 
     public AudioModel buscaAudio(AudioModel audioModel) {
         log.info("buscando audios na base de dados");
-        return AudioModel.builder().build();
+        return AudioModel.builder()
+                .idAudio("id_audio_encontrado")
+                .nomeAudio("nome_audio_encontrado")
+                .audio("audio_encontrado")
+                .build();
         // integrar com parte do Lee
 //        var audioModelRetorno = integracaoPort.busca(audioModel);
 //        return audioModelRetorno;

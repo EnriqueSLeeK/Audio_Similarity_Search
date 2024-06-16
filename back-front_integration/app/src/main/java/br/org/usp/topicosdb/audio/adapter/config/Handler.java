@@ -7,7 +7,7 @@ import java.net.URL;
 
 @Component
 public class Handler {
-    private final String path = "https://github.com/EnriqueSLeeK/Audio_Similarity_Search/raw/main/back-front%20integration/app/src/main/resources/";
+    private final String path = "https://github.com/EnriqueSLeeK/Audio_Similarity_Search/raw/main/back-front_integration/app/src/main/resources/";
 
     public Object getContent(String mensagem) throws IOException {
         return new URL(path + mensagem).openConnection().getContent();
