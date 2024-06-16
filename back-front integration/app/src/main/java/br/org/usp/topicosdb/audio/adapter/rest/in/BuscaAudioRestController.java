@@ -1,5 +1,6 @@
 package br.org.usp.topicosdb.audio.adapter.rest.in;
 
+import br.org.usp.topicosdb.audio.adapter.config.Handler;
 import br.org.usp.topicosdb.audio.adapter.service.AudioService;
 import br.org.usp.topicosdb.audio.adapter.service.model.AudioDTO;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sound.sampled.AudioSystem;
+import java.net.URL;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,11 +21,16 @@ import javax.sound.sampled.AudioSystem;
 public class BuscaAudioRestController {
 
     private final AudioService audioService;
+    private final Handler handler;
 
     @GetMapping("busca/")
     public ResponseEntity<AudioDTO> buscaAudio(@RequestBody final String mensagem) {
         try {
             log.info("solicitação de busca por audio");
+            String path = "https://github.com/EnriqueSLeeK/Audio_Similarity_Search/blob/main/back-front%20integration/app/src/main/resources/";
+            // tentando pegar da web
+            var urlConnection = new URL(path + mensagem).openConnection().getInputStream();
+            // pegando o arquivo localmente
             var inputStream = getClass().getClassLoader().getResourceAsStream(mensagem);
             var audioStream = AudioSystem.getAudioInputStream(inputStream);
             var audioDTO = AudioDTO.builder().audioInputStream(audioStream).build();
