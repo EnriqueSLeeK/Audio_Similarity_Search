@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -8,7 +8,7 @@ export class AppController {
   ) {}
 
   @Post('search')
-  async queryValue(audio: any, text: string) {
+  async queryValue(@Body('audio') audio: any, @Body('text') text: string) {
 
     if (audio == null)
       throw new BadRequestException()
@@ -24,7 +24,7 @@ export class AppController {
   }
 
   @Post('query')
-  async uploadAudio(audio: any, text: string) {
+  async uploadAudio(@Body('audio') audio: any, @Body('text') text: string) {
 
     if (audio == null)
       throw new BadRequestException();
