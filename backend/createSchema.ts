@@ -3,8 +3,8 @@ import weaviate from "weaviate-ts-client"
 
 let client: any = weaviate.client(
 	{
-		scheme: process.env.scheme,
-		host: process.env.host
+		scheme: "http",
+		host: "localhost:8080"
 	}
 )
 
