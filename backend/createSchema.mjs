@@ -1,11 +1,11 @@
-"use strict";
 
-import weaviate_ts_client_1 from "weaviate-ts-client"
+import * as weaviate from "weaviate-client"
 
-var client = weaviate_ts_client_1.client({
+var client = weaviate.weaviateV2.client({
     scheme: "http",
     host: "localhost:8080"
 });
+
 var schemaConfig = {
     "class": "AudioTable",
     "vectorizer": "multi2vec-bind",
