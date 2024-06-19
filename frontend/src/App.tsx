@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Container, Form, Button, Spinner } from 'react-bootstrap';
 
@@ -7,6 +7,7 @@ const App: React.FC = () => {
   const [uploadStatus, setUploadStatus] = useState<string>('');
   const [audioSrc, setAudioSrc] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -29,16 +30,26 @@ const App: React.FC = () => {
       const response = await axios.post('/process-audio', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        responseType: 'blob', // Ensure the response type is blob
       });
 
-      setUploadStatus(response.data.message);
-      setAudioSrc(response.data.audioSrc); // Assuming backend returns base64 audioSrc
+      const audioBlob = new Blob([response.data], { type: 'audio/mpeg' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      setAudioSrc(audioUrl);
+
+      setUploadStatus('File uploaded successfully.');
     } catch (error) {
       console.error('Error uploading file:', error);
       setUploadStatus('An error occurred.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handlePlay = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
     }
   };
 
@@ -49,7 +60,7 @@ const App: React.FC = () => {
         <Form.Group>
           <Form.Control
             id="audioFile"
-            type= "file"
+            type="file"
             onChange={handleFileChange}
             accept=".mp3,.wav,.ogg"
           />
@@ -60,10 +71,15 @@ const App: React.FC = () => {
       </Form>
       {uploadStatus && <p>{uploadStatus}</p>}
       {audioSrc && (
-        <audio controls>
-          <source src={audioSrc} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
+        <>
+          <audio ref={audioRef}>
+            <source src={audioSrc} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+          <Button variant="secondary" onClick={handlePlay}>
+            Play Audio
+          </Button>
+        </>
       )}
     </Container>
   );
