@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Container, Form, Button, Spinner } from 'react-bootstrap';
+import { writeFileSync } from 'fs';
 
 const App: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -27,14 +28,16 @@ const App: React.FC = () => {
       const formData = new FormData();
       formData.append('audio', selectedFile);
 
-      const response = await axios.post('/process-audio', formData, {
+      const response = await axios.post('http://localhost:3000/search', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
-        responseType: 'blob', // Ensure the response type is blob
       });
 
-      const audioBlob = new Blob([response.data], { type: 'audio/mpeg' });
+      console.log(response.data)
+      console.log(response.data.data.Get.AudioTable[0].audio);
+      const base64Audio = response.data.data.Get.AudioTable[0].audio;
+      const audioBlob = new Blob([Uint8Array.from(atob(base64Audio), c => c.charCodeAt(0))], { type: 'audio/mpeg' });
       const audioUrl = URL.createObjectURL(audioBlob);
       setAudioSrc(audioUrl);
 

@@ -16,13 +16,7 @@ export class AppController {
       throw new BadRequestException();
 
     const result: any = await this.appService.getAudio(audio.buffer, "");
-
-    const decodedResult = result.data.Get.AudioTable.map((encodedAudio: any) => {
-        return Buffer.from(encodedAudio.audio, 'base64');
-      }
-    )
-   
-    return decodedResult;
+    return result;
   }
 
   @Post('upload')
