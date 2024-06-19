@@ -10,7 +10,7 @@ const client = weaviate.weaviateV2.client(
   }
 );
 
-const filePath = './audio/som.wav'
+const filePath = './audio/Shoor_mode.wav'
 const fileStream = createReadStream(filePath);
 
 const formData = new FormData();

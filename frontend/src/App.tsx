@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { Container, Form, Button, Spinner } from 'react-bootstrap';
-import { writeFileSync } from 'fs';
 
 const App: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
