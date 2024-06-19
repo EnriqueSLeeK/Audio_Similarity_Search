@@ -1,5 +1,6 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller()
 export class AppController {
@@ -8,29 +9,31 @@ export class AppController {
   ) {}
 
   @Post('search')
-  async queryValue(@Body('audio') audio: any, @Body('text') text: string) {
+  @UseInterceptors(FileInterceptor('audio'))
+  async queryValue(@UploadedFile() audio: any) {
 
-    if (audio == null)
-      throw new BadRequestException()
+    if (!audio)
+      throw new BadRequestException();
 
-    const result: any[] = await this.appService.getAudio(audio, text);
+    const result: any = await this.appService.getAudio(audio.buffer, "");
 
-    const decodedResult = result.map((encodedAudio: string) => {
-        return Buffer.from(encodedAudio, 'base64');
+    const decodedResult = result.data.Get.AudioTable.map((encodedAudio: any) => {
+        return Buffer.from(encodedAudio.audio, 'base64');
       }
     )
-    
+   
     return decodedResult;
   }
 
-  @Post('query')
-  async uploadAudio(@Body('audio') audio: any, @Body('text') text: string) {
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('audio'))
+  async uploadAudio(@UploadedFile() audio: any, @Body('text') text: string) {
 
-    if (audio == null)
+    if (!audio)
       throw new BadRequestException();
 
-    const status = await this.appService.insertAudio(audio, text);
+    await this.appService.insertAudio(audio.buffer, text);
 
-    return status;
+    return "ok";
   }
 }

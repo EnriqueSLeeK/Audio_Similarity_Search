@@ -6,37 +6,22 @@ export class AppService {
 
   client: any = weaviate.client(
     {
-        scheme: process.env.SCHEME,
-        host: process.env.HOST
+      scheme: process.env.SCHEME,
+      host: process.env.HOST
     }
   )
 
-  // client: any = weaviate.client(
-  //   {
-  //       scheme: 'http',
-  //       host: 'localhost:8080'
-  //   }
-  // )
-
   constructor () {}    
-
-  encodeAudio(audio: any): string {
-    const encodedAudio: string = Buffer.from(audio).toString('base64');
-
-    return encodedAudio;
-  }
 
   async insertAudio(audio: any, text: string): Promise<any>{
 
-    const preparedAudio = this.encodeAudio(audio);
-
+    const b64 = audio.toString('base64');
     const res = await this.client.data
       .creator()
       .withClassName('AudioTable')
       .withProperties(
         {
-          audio: preparedAudio,
-          text: text
+          audio: b64,
         }
       )
       .do();
@@ -45,20 +30,17 @@ export class AppService {
   }
 
   async getAudio(audio: any, text: string): Promise<any> {
-    const queryAudio = this.encodeAudio(audio);
 
     const queryRes = await this.client.graphql
       .get()
       .withClassName('AudioTable')
+      .withFields(['audio'])
       .withNearAudio(
         {
-          audio: queryAudio,
-        }
-      ).withNearAudio(
-        {
-          text: text,
+          audio: audio.toString('base64'),
         }
       )
+      .withLimit(3)
       .do();
 
     return queryRes;

@@ -6,20 +6,24 @@ networks:
 services:
 
   backend:
-    container_name: backend
-    build: backend
     networks:
       - app-network
+    container_name: backend
+    build: backend
     environment:
-      HOST: "localhost:8080"
+      HOST: "weaviate:8080"
       SCHEME: "http"
     ports:
       - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       - weaviate
     restart: always
 
   weaviate:
+    networks:
+      - app-network
     command:
     - --host
     - 0.0.0.0
@@ -28,6 +32,9 @@ services:
     - --scheme
     - http
     image: cr.weaviate.io/semitechnologies/weaviate:1.25.1
+    expose:
+      - "8080"
+      - "50051"
     ports:
     - 8080:8080
     - 50051:50051
@@ -42,7 +49,10 @@ services:
       DEFAULT_VECTORIZER_MODULE: 'multi2vec-bind'
       ENABLE_MODULES: 'multi2vec-bind'
       CLUSTER_HOSTNAME: 'node1'
+
   multi2vec-bind:
+    networks:
+      - app-network
     image: cr.weaviate.io/semitechnologies/multi2vec-bind:imagebind
     environment:
       ENABLE_CUDA: '0'
