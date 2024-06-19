@@ -5,6 +5,21 @@ networks:
 # Vector database container
 services:
 
+  frontend:
+    networks:
+      - app-network
+    container_name: frontend
+    build: frontend
+    environment:
+      BACK: "http://backend:3000"
+    ports:
+      - "3001:3000"
+    expose:
+      - "3000"
+    depends_on:
+      - backend
+    restart: always
+
   backend:
     networks:
       - app-network
